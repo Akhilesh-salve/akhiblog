@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akhi Daily Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Space Mono", monospace;
+            background-color: #f5f2eb;
+            color: #333;
+            background-image: 
+                radial-gradient(#e4d9c3 1px, transparent 1px), 
+                radial-gradient(#e4d9c3 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+        .retro-title {
+            font-family: "VT323", monospace;
+        }
+        .blog-card {
+            border: 2px solid #333;
+            box-shadow: 4px 4px 0px #333;
+            transition: all 0.25s ease;
+        }
+        .blog-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #333;
+        }
+        .retro-button {
+            background-color: #ff6b6b;
+            border: 2px solid #333;
+            box-shadow: 3px 3px 0px #333;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .retro-button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px #333;
+        }
+        .retro-button:active {
+            transform: translate(1px, 1px);
+            box-shadow: 2px 2px 0px #333;
+        }
+        .retro-input {
+            border: 2px solid #333;
+            box-shadow: 3px 3px 0px #333;
+            background-color: #fff;
+        }
+        .retro-input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+        }
+        .retro-textarea {
+            border: 2px solid #333;
+            box-shadow: 3px 3px 0px #333;
+            background-color: #fff;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-item:after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #ff6b6b;
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover:after {
+            width: 100%;
+        }
+        .delete-button {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .delete-button:hover {
+            background-color: #ffeeee;
+            color: #ff6b6b;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <!-- Header -->
+        <header class="mb-12">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <h1 class="retro-title text-5xl md:text-6xl font-bold text-center md:text-left mb-4 md:mb-0">
+                    <span class="text-[#ff6b6b]">Akhi</span>Blog
+                </h1>
+                <nav class="flex space-x-6">
+                    <a href="#" class="nav-item text-lg font-medium" data-page="home">Home</a>
+                    <a href="#" class="nav-item text-lg font-medium" data-page="archive">Archive</a>
+                    <a href="#" class="nav-item text-lg font-medium" data-page="about">About</a>
+                </nav>
+            </div>
+            <div class="h-2 bg-[#333] w-full rounded-full"></div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Home Page -->
+            <div id="homePage" class="page active">
+                <div class="flex flex-col md:flex-row gap-8">
+                    <!-- Blog Posts Section -->
+                    <section class="w-full md:w-2/3">
+                        <div class="flex justify-between items-center mb-8">
+                            <h2 class="retro-title text-3xl font-bold">Daily Entries</h2>
+                            <button id="newPostBtn" class="retro-button px-4 py-2 font-bold">New Post</button>
+                        </div>
+                        <!-- Blog Posts -->
+                        <div id="blogPosts" class="space-y-8">
+                            <!-- Sample posts will be loaded here -->
+                        </div>
+                    </section>
+
+                    <!-- Sidebar -->
+                    <aside class="w-full md:w-1/3">
+                        <div class="blog-card bg-white p-6 mb-8">
+                            <h3 class="retro-title text-2xl font-bold mb-4">About Me</h3>
+                            <p class="mb-4">Welcome to my retro-themed daily blog! I write about my thoughts, experiences, and interests.</p>
+                            <div class="flex justify-center">
+                                <svg class="w-32 h-32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="50" cy="40" r="25" fill="#ff6b6b" />
+                                    <circle cx="40" cy="35" r="5" fill="white" />
+                                    <circle cx="60" cy="35" r="5" fill="white" />
+                                    <path d="M35 50 Q50 60 65 50" stroke="#333" stroke-width="3" fill="none" />
+                                    <path d="M20 20 Q25 10 35 15" stroke="#333" stroke-width="2" fill="none" />
+                                    <path d="M80 20 Q75 10 65 15" stroke="#333" stroke-width="2" fill="none" />
+                                    <path d="M30 85 Q50 95 70 85" stroke="#333" stroke-width="3" fill="none" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="blog-card bg-white p-6">
+                            <h3 class="retro-title text-2xl font-bold mb-4">Calendar</h3>
+                            <div id="calendar" class="grid grid-cols-7 gap-1 text-center">
+                                <!-- <div class="font-bold">S</div>
+                                <div class="font-bold">M</div>
+                                <div class="font-bold">T</div>
+                                <div class="font-bold">W</div>
+                                <div class="font-bold">T</div>
+                                <div class="font-bold">F</div>
+                                <div class="font-bold">S</div> -->
+                                <!-- Calendar days will be generated by JS -->
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+            <!-- Archive Page -->
+            <div id="archivePage" class="page">
+                <h2 class="retro-title text-3xl font-bold mb-8">Blog Archive</h2>
+                <div class="blog-card bg-white p-6 mb-8">
+                    <div id="archiveByMonth" class="space-y-6">
+                        <!-- Archive content will be generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Page -->
+            <div id="aboutPage" class="page">
+                <h2 class="retro-title text-3xl font-bold mb-8">About This Blog</h2>
+                <div class="blog-card bg-white p-6 mb-8">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="w-full md:w-2/3">
+                            <h3 class="retro-title text-2xl font-bold mb-4">Hello, I'm the Akhi</h3>
+                            <p class="mb-4">Welcome to my retro-themed blog! This space is dedicated to my daily thoughts and experiences.</p>
+                            <p class="mb-4">I created this blog as a way to capture the nostalgic feel of early internet days.</p>
+                            <p class="mb-4">Feel free to browse through my posts and get in touch if you'd like to connect!</p>
+                            <h3 class="retro-title text-2xl font-bold mb-4 mt-8">Blog Features</h3>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Daily blog entries</li>
+                                <li>Retro-inspired design</li>
+                                <li>Monthly archives</li>
+                                <li>Interactive calendar</li>
+                                <li>Like and comment system</li>
+                            </ul>
+                        </div>
+                        <div class="w-full md:w-1/3">
+                            <div class="blog-card bg-[#ffeeee] p-6">
+                                <h4 class="retro-title text-xl font-bold mb-4">Contact Info</h4>
+                                <div class="space-y-3">
+                                    <p class="flex items-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                        </svg>
+                                        salveakhi7@gmail.com
+                                    </p>
+                                    <p class="flex items-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+                                        </svg>
+                                        @akhilesh_salve
+                                    </p>
+                                    <p class="flex items-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        Latur, India
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-16 pt-8 border-t-2 border-[#333]">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p>© 2025 BlogAkhi</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="https://www.linkedin.com/in/akhileshsalve/" class="retro-button px-3 py-1 text-sm">Twitter</a>
+                    <a href="https://www.instagram.com/akhilesh_salve/" class="retro-button px-3 py-1 text-sm">Instagram</a>
+                    <a href="https://www.linkedin.com/in/akhileshsalve/" class="retro-button px-3 py-1 text-sm">RSS</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- New Post Modal -->
+    <div id="newPostModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 max-w-2xl w-full mx-4 blog-card">
+            <h2 class="retro-title text-3xl font-bold mb-6">Create New Post</h2>
+            <form id="newPostForm">
+                <div class="mb-4">
+                    <label for="postTitle" class="block mb-2 font-bold">Title</label>
+                    <input type="text" id="postTitle" class="retro-input w-full px-4 py-2" required>
+                </div>
+                <div class="mb-6">
+                    <label for="postContent" class="block mb-2 font-bold">Content</label>
+                    <textarea id="postContent" rows="8" class="retro-textarea w-full px-4 py-2" required></textarea>
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" id="cancelPostBtn" class="px-4 py-2 border-2 border-[#333] font-bold">Cancel</button>
+                    <button type="submit" class="retro-button px-4 py-2 font-bold">Publish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 max-w-md w-full mx-4 blog-card">
+            <h2 class="retro-title text-2xl font-bold mb-6">Delete Post</h2>
+            <p class="mb-6">Are you sure you want to delete this post? This action cannot be undone.</p>
+            <div class="flex justify-end space-x-4">
+                <button id="cancelDeleteBtn" class="px-4 py-2 border-2 border-[#333] font-bold">Cancel</button>
+                <button id="confirmDeleteBtn" class="retro-button bg-red-500 px-4 py-2 font-bold">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample blog posts
+        const samplePosts = [
+            {
+                id: 1,
+                title: "My First Retro Blog Post",
+                date: "October 15, 2023",
+                content: "Today I started my retro-themed blog! I'm excited to share my thoughts and experiences in this nostalgic digital space.",
+                likes: 5
+            },
+            {
+                id: 2,
+                title: "Exploring Vintage Technology",
+                date: "October 14, 2023",
+                content: "I visited a computer museum today and saw some amazing vintage technology. From Commodore 64 to early Apple computers, it was a trip down memory lane!",
+                likes: 8
+            }
+        ];
+
+        // DOM elements
+        const blogPostsContainer = document.getElementById('blogPosts');
+        const newPostBtn = document.getElementById('newPostBtn');
+        const newPostModal = document.getElementById('newPostModal');
+        const newPostForm = document.getElementById('newPostForm');
+        const cancelPostBtn = document.getElementById('cancelPostBtn');
+        const calendar = document.getElementById('calendar');
+        const deleteModal = document.getElementById('deleteModal');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const archiveByMonth = document.getElementById('archiveByMonth');
+        const navItems = document.querySelectorAll('.nav-item');
+        const pages = document.querySelectorAll('.page');
+
+        // Current post to delete
+        let currentPostToDelete = null;
+
+        // Initialize blog posts in localStorage if not exists
+        if (!localStorage.getItem('blogPosts')) {
+            localStorage.setItem('blogPosts', JSON.stringify(samplePosts));
+        }
+
+        // Display blog posts
+        function displayPosts() {
+            blogPostsContainer.innerHTML = '';
+            const posts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+            
+            if (posts.length === 0) {
+                blogPostsContainer.innerHTML = '<p class="text-center py-8 text-gray-500">No posts yet. Create your first post!</p>';
+                return;
+            }
+            
+            posts.forEach(post => {
+                const postElement = document.createElement('article');
+                postElement.className = 'blog-card bg-white p-6';
+                postElement.innerHTML = `
+                    <h3 class="retro-title text-2xl font-bold mb-2">${post.title}</h3>
+                    <p class="text-sm text-gray-600 mb-4">${post.date}</p>
+                    <div class="mb-4">${post.content}</div>
+                    <div class="flex justify-between items-center">
+                        <button class="like-button flex items-center" data-id="${post.id}">
+                            <svg class="w-5 h-5 mr-1" fill="${post.liked ? '#ff6b6b' : 'none'}" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            <span>${post.likes}</span>
+                        </button>
+                        <button class="delete-button text-sm text-gray-500" data-id="${post.id}">Delete</button>
+                    </div>
+                `;
+                blogPostsContainer.prepend(postElement);
+            });
+            
+            // Add event listeners to like and delete buttons
+            document.querySelectorAll('.like-button').forEach(button => {
+                button.addEventListener('click', handleLike);
+            });
+            
+            document.querySelectorAll('.delete-button').forEach(button => {
+                button.addEventListener('click', showDeleteModal);
+            });
+        }
+
+        // Handle like button click
+        function handleLike(e) {
+            const postId = parseInt(e.currentTarget.dataset.id);
+            const posts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+            const postIndex = posts.findIndex(post => post.id === postId);
+            
+            if (postIndex !== -1) {
+                if (!posts[postIndex].liked) {
+                    posts[postIndex].likes++;
+                    posts[postIndex].liked = true;
+                } else {
+                    posts[postIndex].likes--;
+                    posts[postIndex].liked = false;
+                }
+                
+                localStorage.setItem('blogPosts', JSON.stringify(posts));
+                displayPosts();
+                updateArchive();
+            }
+        }
+
+        // Show delete confirmation modal
+        function showDeleteModal(e) {
+            const postId = parseInt(e.currentTarget.dataset.id);
+            currentPostToDelete = postId;
+            deleteModal.classList.remove('hidden');
+        }
+
+        // Handle delete post
+        function handleDelete() {
+            if (currentPostToDelete) {
+                const posts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+                const updatedPosts = posts.filter(post => post.id !== currentPostToDelete);
+                localStorage.setItem('blogPosts', JSON.stringify(updatedPosts));
+                deleteModal.classList.add('hidden');
+                currentPostToDelete = null;
+                displayPosts();
+                updateArchive();
+            }
+        }
+
+        // Show new post modal
+        newPostBtn.addEventListener('click', () => {
+            newPostModal.classList.remove('hidden');
+        });
+
+        // Hide new post modal
+        cancelPostBtn.addEventListener('click', () => {
+            newPostModal.classList.add('hidden');
+            newPostForm.reset();
+        });
+
+        // Hide delete modal
+        cancelDeleteBtn.addEventListener('click', () => {
+            deleteModal.classList.add('hidden');
+            currentPostToDelete = null;
+        });
+
+        // Confirm delete
+        confirmDeleteBtn.addEventListener('click', handleDelete);
+
+        // Handle new post submission
+        newPostForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('postTitle').value;
+            const content = document.getElementById('postContent').value;
+            const posts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+            const newId = posts.length > 0 ? Math.max(...posts.map(post => post.id)) + 1 : 1;
+            
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date().toLocaleDateString('en-US', options);
+            
+            const newPost = {
+                id: newId,
+                title: title,
+                date: today,
+                content: content,
+                likes: 0,
+                liked: false
+            };
+            
+            posts.push(newPost);
+            localStorage.setItem('blogPosts', JSON.stringify(posts));
+            newPostModal.classList.add('hidden');
+            newPostForm.reset();
+            displayPosts();
+            updateArchive();
+        });
+
+        // Generate calendar
+        function generateCalendar() {
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            
+            // Clear previous calendar days
+            const headerCells = Array.from(calendar.children).slice(0, 7);
+            calendar.innerHTML = '';
+            
+            // Add header cells back
+            headerCells.forEach(cell => calendar.appendChild(cell));
+            
+            // Add month name
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const monthYearHeader = document.createElement('div');
+            monthYearHeader.className = 'col-span-7 text-center font-bold mb-2 retro-title text-xl';
+            monthYearHeader.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+            calendar.appendChild(monthYearHeader);
+            
+            // Add day headers back
+            for (let i = 0; i < 7; i++) {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'font-bold';
+                dayHeader.textContent = "SMTWTFS"[i];
+                calendar.appendChild(dayHeader);
+            }
+            
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'h-8 text-gray-300';
+                calendar.appendChild(emptyDay);
+            }
+            
+            // Add days of the month
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'h-8 flex items-center justify-center';
+                
+                if (i === today.getDate()) {
+                    dayCell.className += ' bg-[#ff6b6b] text-white font-bold';
+                }
+                
+                dayCell.textContent = i;
+                calendar.appendChild(dayCell);
+            }
+        }
+
+        // Update archive page
+        function updateArchive() {
+            archiveByMonth.innerHTML = '';
+            const posts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+            
+            if (posts.length === 0) {
+                archiveByMonth.innerHTML = '<p class="text-center py-8 text-gray-500">No posts in the archive yet.</p>';
+                return;
+            }
+            
+            // Group posts by month
+            const postsByMonth = {};
+            posts.forEach(post => {
+                const date = new Date(post.date);
+                const monthYear = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+                
+                if (!postsByMonth[monthYear]) {
+                    postsByMonth[monthYear] = [];
+                }
+                
+                postsByMonth[monthYear].push(post);
+            });
+            
+            // Create archive sections by month
+            for (const monthYear in postsByMonth) {
+                const monthSection = document.createElement('div');
+                monthSection.className = 'mb-6';
+                
+                const monthHeader = document.createElement('h3');
+                monthHeader.className = 'retro-title text-2xl font-bold mb-4';
+                monthHeader.textContent = monthYear;
+                monthSection.appendChild(monthHeader);
+                
+                const postsList = document.createElement('ul');
+                postsList.className = 'space-y-2 pl-4';
+                
+                postsByMonth[monthYear].forEach(post => {
+                    const postItem = document.createElement('li');
+                    postItem.className = 'flex justify-between items-center';
+                    const dateStr = new Date(post.date).toLocaleDateString('en-US', { day: 'numeric' });
+                    
+                    postItem.innerHTML = `
+                        <span class="font-bold">${dateStr}:</span>
+                        <span class="flex-grow px-4">${post.title}</span>
+                        <span class="text-gray-500 text-sm">${post.likes} likes</span>
+                    `;
+                    
+                    postsList.appendChild(postItem);
+                });
+                
+                monthSection.appendChild(postsList);
+                archiveByMonth.appendChild(monthSection);
+            }
+        }
+
+        // Navigation between pages
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetPage = item.getAttribute('data-page');
+                
+                // Hide all pages
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Show target page
+                document.getElementById(`${targetPage}Page`).classList.add('active');
+                
+                // Update active nav item
+                navItems.forEach(navItem => {
+                    navItem.classList.remove('font-bold');
+                });
+                item.classList.add('font-bold');
+            });
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === newPostModal) {
+                newPostModal.classList.add('hidden');
+                newPostForm.reset();
+            }
+            
+            if (e.target === deleteModal) {
+                deleteModal.classList.add('hidden');
+                currentPostToDelete = null;
+            }
+        });
+
+        // Initialize the application
+        displayPosts();
+        generateCalendar();
+        updateArchive();
+    </script>
+</body>
+</html>
